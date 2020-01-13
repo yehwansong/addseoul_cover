@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	*{
+		margin:0;
+		padding: 0
+	}
+	html,body{
+		overflow: hidden;
+	    width: 100vw;
+	    height: 100%;
+	}
+	.wrapper{
+	    width: 100vw;
+	    height: 10%;
+
+	    position: relative;
+	    transform: rotateY(40deg);
+	    transform-style: preserve-3d;
+	    transform-origin: right center -2.9vh;
+		transition: transform 0.8s cubic-bezier(0,.88,.57,1.32)
+	}
+	.wrapper>div{
+		position: absolute;
+
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-image: url(background.png);
+		background-size: 100%;
+	}
+	.wrapper>div:nth-child(1){
+		/*background: red;*/
+		transform:rotateX(0deg);
+		transform-origin: center center -2.9vh
+	}
+	.wrapper>div:nth-child(2){
+		/*background: blue;*/
+		transform:rotateX(120deg);
+		transform-origin: center center -2.9vh;
+		filter: invert(1);
+	}
+	.wrapper>div:nth-child(3){
+		/*background: black;*/
+		transform:rotateX(240deg);
+		transform-origin: center center -2.9vh;
+		filter: invert(1);
+	}
+	.re_rotated_1{
+		transform: rotateY(45deg) rotateX(120deg)
+	}
+	.re_rotated_2{
+		transform: rotateY(45deg) rotateX(100deg)
+	}
+	.re_rotated_3{
+		transform: rotateY(45deg) rotateX(70deg)
+	}
+	.re_rotated_4{
+		transform: rotateY(45deg) rotateX(40deg)
+	}
+	.re_rotated_5{
+		transform: rotateY(45deg) rotateX(10deg)
+	}
+	.rotated_1{
+		transform: rotateY(45deg) rotateX(-120deg)
+	}
+	.rotated_2{
+		transform: rotateY(45deg) rotateX(-100deg)
+	}
+	.rotated_3{
+		transform: rotateY(45deg) rotateX(-70deg)
+	}
+	.rotated_4{
+		transform: rotateY(45deg) rotateX(-40deg)
+	}
+	.rotated_5{
+		transform: rotateY(45deg) rotateX(-10deg)
+	}
+	.wrapper>div:nth-child(1)>.shadow{
+		width: 100%;
+		height: 100%;
+		background: black;
+		position: absolute;
+		left: 0;
+		top: 0;
+		opacity: 0;
+		transition: opacity 0.8s
+	}
+	.rotated_1 .shadow,
+	.re_rotated_1 .shadow{
+		opacity: 0.8 !important
+	}
+	.rotated_2 .shadow,
+	.re_rotated_2 .shadow{
+		opacity: 0.6 !important
+	}
+	.rotated_3 .shadow,
+	.re_rotated_3 .shadow{
+		opacity: 0.4 !important
+	}
+	.rotated_4 .shadow,
+	.re_rotated_4 .shadow{
+		opacity: 0.2 !important
+	}
+	.rotated_5 .shadow,
+	.re_rotated_5 .shadow{
+		opacity: 0.1 !important
+	}
+</style>
+</head>
+<body>
+
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+            <script>jQuery.noConflict();</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var h = window.innerHeight
+	var unit = h / $('.wrapper').length
+	var re = false
+	var posx = 0
+	for (var i = $('.wrapper').length - 1; i >= 0; i--) {
+		$('body').find('.wrapper').eq(i).find('div').css({'background-position':-1*unit*i})
+	}
+	var pos
+	var org_pos
+	console.log('1')
+	jQuery("body").on("touchmove",function(e) {
+		console.log('2')
+		pos = e.originalEvent.touches[0].pageY;
+		console.log(Math.abs(posx - org_pos))
+		if(pos < org_pos){
+			re = false
+		}else{
+			re = true
+		}
+		if(Math.abs(posx - org_pos)>unit/2){
+			org_pos = pos
+		}
+
+		$('.rotated_1').removeClass('rotated_1')
+		$('.rotated_2').removeClass('rotated_2')
+		$('.rotated_3').removeClass('rotated_3')
+		$('.rotated_4').removeClass('rotated_4')
+		$('.rotated_5').removeClass('rotated_5')
+		$('.re_rotated_1').removeClass('re_rotated_1')
+		$('.re_rotated_2').removeClass('re_rotated_2')
+		$('.re_rotated_3').removeClass('re_rotated_3')
+		$('.re_rotated_4').removeClass('re_rotated_4')
+		$('.re_rotated_5').removeClass('re_rotated_5')
+		if(re){
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)).addClass('rotated_1')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)+1).addClass('rotated_2')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)+2).addClass('rotated_3')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)+3).addClass('rotated_4')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)+4).addClass('rotated_5')
+		}else{
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)).addClass('re_rotated_1')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)-1).addClass('re_rotated_2')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)-2).addClass('re_rotated_3')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)-3).addClass('re_rotated_4')
+			$('body').find('.wrapper').eq(Math.floor(pos/unit)-4).addClass('re_rotated_5')
+		}
+		
+	})
+	jQuery("body").on("touchend",function(e) {
+		$('.rotated_1').removeClass('rotated_1')
+		$('.rotated_2').removeClass('rotated_2')
+		$('.rotated_3').removeClass('rotated_3')
+		$('.rotated_4').removeClass('rotated_4')
+		$('.rotated_5').removeClass('rotated_5')
+		$('.re_rotated_1').removeClass('re_rotated_1')
+		$('.re_rotated_2').removeClass('re_rotated_2')
+		$('.re_rotated_3').removeClass('re_rotated_3')
+		$('.re_rotated_4').removeClass('re_rotated_4')
+		$('.re_rotated_5').removeClass('re_rotated_5')
+	});
+})
+</script>
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div>  
+<div class="wrapper">
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+	<div><div class="shadow"></div></div>
+</div> 
+
+</body>
+</html>
